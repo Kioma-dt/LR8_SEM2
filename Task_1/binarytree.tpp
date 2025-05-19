@@ -1,5 +1,3 @@
-#include "binarytree.h"
-
 template <typename Key, typename Value>
 Node<Key, Value>* BinaryTree<Key, Value>::insert(Node<Key, Value>* node, Key key, Value value) {
 
@@ -68,10 +66,10 @@ Node<Key, Value>* BinaryTree<Key, Value>::removeSubtree(Node<Key, Value>* node, 
     }
 
     if(key < node->key){
-        return removeSubtree(node->left);
+        node->left =  removeSubtree(node->left, key);
     }
     else if(key > node->key){
-        return removeSubtree(node->right);
+        node->right =  removeSubtree(node->right, key);
     }
     else{
         destroy(node);
@@ -131,43 +129,32 @@ void BinaryTree<Key, Value>::destroy(Node<Key, Value>* node) {
 }
 
 template <typename Key, typename Value>
-std::vector<Value> BinaryTree<Key, Value>::preOrder(Node<Key, Value>* node) {
-    std::vector<Value> temp;
-
+void BinaryTree<Key, Value>::preOrder(std::vector<Value>& temp, Node<Key, Value>* node) {
 
     if (node != nullptr) {
         temp.push_back(node->value);
-        temp.push_back(preOrder(node->left));
-        temp.push_back( preOrder(node->right));
+        preOrder(temp, node->left);
+        preOrder(temp, node->right);
     }
-
-    return temp;
 }
 
 template <typename Key, typename Value>
-std::vector<Value> BinaryTree<Key, Value>::postOrder(Node<Key, Value>* node) {
-    std::vector<Value> temp;
+void BinaryTree<Key, Value>::postOrder(std::vector<Value>& temp, Node<Key, Value>* node) {
 
     if (node != nullptr) {
-        temp.push_back(postOrder(node->left));
-        temp.push_back(postOrder(node->right));
+        postOrder(temp, node->left);
+        (temp, node->right);
         temp.push_back(node->value);
     }
-
-    return temp;
 }
 
 template <typename Key, typename Value>
-std::vector<Value> BinaryTree<Key, Value>::inOrder(Node<Key, Value>* node) {
-    std::vector<Value> temp;
-
+void BinaryTree<Key, Value>::inOrder(std::vector<Value>& temp, Node<Key, Value>* node) {
     if (node != nullptr) {
-        temp.push_back( inOrder(node->left));
+        inOrder(temp, node->left);
         temp.push_back (node->value);
-        temp.push_back(inOrder(node->right));
+        inOrder(temp, node->right);
     }
-
-    return temp;
 }
 
 template <typename Key, typename Value>
@@ -273,8 +260,8 @@ void BinaryTree<Key, Value>::insertSubtree(Node<Key, Value> *subtree){
 }
 
 template <typename Key, typename Value>
-bool BinaryTree<Key, Value>::insertAt(Key *parentKey, Key key, Value value, bool left){
-    Node<Key, Value> parent = search(parentKey);
+bool BinaryTree<Key, Value>::insertAt(Key parentKey, Key key, Value value, bool left){
+    Node<Key, Value>* parent = search(root, parentKey);
     if(parent == nullptr){
         return false;
     }
@@ -324,17 +311,24 @@ Value BinaryTree<Key, Value>::value(Key key) {
 
 template <typename Key, typename Value>
 std::vector<Value> BinaryTree<Key, Value>::printPreOrder() {
-    return preOrder(root);
+    std::vector<Value> vector;
+    preOrder(vector, root);
+    return vector;
 }
 
 template <typename Key, typename Value>
 std::vector<Value> BinaryTree<Key, Value>::printPostOrder() {
-    return postOrder(root);
+    
+    std::vector<Value> vector;
+    postOrder(vector, root);
+    return vector;
 }
 
 template <typename Key, typename Value>
 std::vector<Value> BinaryTree<Key, Value>::printInOrder() {
-    return inOrder(root);
+    std::vector<Value> vector;
+    inOrder(vector, root);
+    return vector;
 }
 
 template <typename Key, typename Value>

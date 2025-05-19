@@ -32,9 +32,9 @@ class BinaryTree {
 
     void destroy(Node<Key, Value>* node);
 
-    std::vector<Value> preOrder(Node<Key, Value>* node);
-    std::vector<Value> postOrder(Node<Key, Value>* node);
-    std::vector<Value> inOrder(Node<Key, Value>* node);
+    void preOrder(std::vector<Value>& temp, Node<Key, Value>* node);
+    void postOrder(std::vector<Value>& temp, Node<Key, Value>* node);
+    void inOrder(std::vector<Value>& temp, Node<Key, Value>* node);
 
     int bstToVine(Node<Key, Value>* grand);
     void compress(Node<Key, Value>* grand, int m);
@@ -48,7 +48,7 @@ public:
     Node<Key, Value>* getRoot() const;
     void insert(Key key, Value value);
     void insertSubtree(Node<Key, Value> *subtree);
-    bool insertAt(Key *parentKey, Key key, Value value, bool left);
+    bool insertAt(Key parentKey, Key key, Value value, bool left);
     void remove(Key key);
     void removeSubtree(Key key);  
     bool find(Key key);
@@ -60,5 +60,7 @@ public:
     void changeMinAndMax();
     Key lowestCommonAncestor(Key key_1, Key key_2);
 };
+
+#include "binarytree.tpp"
 
 #endif	// BINARYTREE_H
